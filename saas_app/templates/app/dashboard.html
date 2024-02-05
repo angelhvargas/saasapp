@@ -1,0 +1,14 @@
+{% extends "app/base.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  This is where your app kicks in.
+{% endblock %}
+
+
+{% block javascript_extra %}
+  {% render_bundle 'vendor' %}
+  {% render_bundle 'main' %}
+{% endblock %}

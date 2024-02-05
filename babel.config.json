@@ -1,0 +1,22 @@
+{ 
+  "parserOpts": { "allowReturnOutsideFunction": true },
+  "presets": [
+    "@babel/preset-react",
+    ["@babel/preset-env", { "useBuiltIns": "usage" }]
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-syntax-dynamic-import"
+      ]
+    },
+    "production": {},
+    "test": {
+      "plugins": [
+        ["__coverage__", {"ignore": "**/__tests__/**"}]
+      ]
+    }
+  }
+}

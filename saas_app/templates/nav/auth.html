@@ -1,0 +1,30 @@
+{% load static i18n compress %}
+ <!-- Static navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <div class="navbar-header mb-10">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="{% static 'images/logo.png' %}"/>
+          </a>
+          SaaS App
+        </div>
+        <div class="d-flex" id="navbarSupportedContent">
+            <div class="breadcrumb-wrapper">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="#0">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'account_signup' %}">Sign up</a>
+                  </li>
+                </ol>
+              </nav>
+            </div>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+

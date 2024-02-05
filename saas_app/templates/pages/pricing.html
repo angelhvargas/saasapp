@@ -1,0 +1,11 @@
+{% extends "blank_base.html" %}
+
+{% block title %}Pricing{% endblock %}
+{% block robots %}index,follow{% endblock %}
+
+{% block content %}
+
+{% for plan in plans %}
+  {% include "payments/_pricing_box.html" %}
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,5 @@
+[run]
+include = saas_app/*
+omit = *migrations*, *tests*, *templates*
+plugins =
+    django_coverage_plugin

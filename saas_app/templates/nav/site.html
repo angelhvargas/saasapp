@@ -1,0 +1,36 @@
+{% load static i18n compress %}
+ <!-- Static navbar -->
+    <nav class="nav-bg-white navbar navbar-expand-md fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="{% static 'images/logo.png' %}"/>
+          </a>
+          SaaS App
+        </div>
+        <div class="d-flex" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="{% url "features" %}">Features</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "pricing" %}">Pricing</a></li>
+          </ul>
+          <ul class="d-flex">
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url "app:dashboard" %}">Account</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                </li>
+                <li class="nav-item">
+                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                </li>
+              {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+

@@ -1,0 +1,76 @@
+{% load static i18n compress %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="robots" content="{% block robots %}noindex,follow{% endblock %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    {% block css %}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    {% endcompress %}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/LineIcons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    {% endcompress %}
+    {% endblock %}
+    {% block css_extra %}
+    <link rel="stylesheet" href="{% static 'css/fullcalendar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fullcalendar.css' %}">
+    {% endblock %}
+  </head>
+
+  <body class="d-flex flex-column {% block body_class %}{% endblock %}">
+    {% block body %}
+    {% block nav%}
+      {% include "nav/site.html" %}
+    {% endblock nav %}
+
+
+    <main class="content">
+      {% block content %}
+
+      {% endblock content %}
+    </main> <!-- /container -->
+
+    {% block modal %}{% endblock modal %}
+    <footer class="footer">
+      <div class="container-fluid">
+        <p class="text-muted">
+          <a href="{% url "blog:entries" %}">Blog</a>
+          <span class="pull-right">
+            <a href="{% url "privacy_policy" %}">Privacy Policy</a> | <a href="{% url "terms_and_conditions" %}">Terms and Conditions</a>
+          </span>
+        </p>
+      </div>
+    </footer>
+    {% endblock body %}
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    {% block javascript %}
+      <!-- Latest JQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+      <!-- place project specific Javascript in this file -->
+      {% compress js %}
+      <script src="{% static 'js/bootstrap.js' %}"></script>
+      <script src="{% static 'js/project.js' %}"></script>
+      {% endcompress %}
+    {% endblock javascript %}
+    {% block javascript_extra %}
+    {% endblock %}
+  </body>
+</html>
+

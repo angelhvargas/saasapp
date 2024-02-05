@@ -1,0 +1,3 @@
+# don't lint tests
+__tests__/
+node_modules/
