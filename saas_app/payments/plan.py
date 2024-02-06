@@ -52,5 +52,5 @@ class FreePlan(object):
 
 class TrialPlan(FreePlan):
     def __init__(self):
-        super(TrialPlan, self).__init__()
+        super().__init__()
         self.name = "Trial"

@@ -27,6 +27,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    class Meta:
+        ordering = ['id']
+
     @property
     def is_on_trial_plan(self):
         return isinstance(self.plan, TrialPlan)

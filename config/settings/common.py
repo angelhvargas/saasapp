@@ -381,3 +381,7 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = (
     True  # We recommend setting to True for new installations
 )
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+# Your local stuff: Below this line define 3rd party library settings
+STRIPE_API_VERSION = "2020-08-27"
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

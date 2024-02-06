@@ -10,7 +10,7 @@ class BaseUserTestCase(TestCase):
         self.factory = RequestFactory()
 
     def login(self):
-        super(BaseUserTestCase, self).login(
+        super().login(
             username=self.user.username, password="password"
         )
 
