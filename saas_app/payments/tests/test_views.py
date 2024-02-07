@@ -127,7 +127,7 @@ class CheckoutViewTestCase(UserTestCase):
 
 class SubscriptionTestCase(UserTestCase):
     def setUp(self):
-        super(SubscriptionTestCase, self).setUp()
+        super().setUp()
         self.cust = Customer.objects.create(stripe_id="foo", user=self.user)
         self.card = Card.objects.create(
             customer=self.cust,
@@ -195,7 +195,7 @@ class SubscriptionUpdateViewTestCase(SubscriptionTestCase):
 
 class PaymentMethodCreateViewTestCase(UserTestCase):
     def setUp(self):
-        super(PaymentMethodCreateViewTestCase, self).setUp()
+        super().setUp()
         self.cust = Customer.objects.create(stripe_id="foo", user=self.user)
         self.card = Card.objects.create(
             customer=self.cust,
@@ -247,7 +247,7 @@ class PaymentMethodCreateViewTestCase(UserTestCase):
 
 class PaymentMethodeUpdateViewTestCase(UserTestCase):
     def setUp(self):
-        super(PaymentMethodeUpdateViewTestCase, self).setUp()
+        super().setUp()
         self.cust = Customer.objects.create(stripe_id="foo", user=self.user)
         self.card = Card.objects.create(
             customer=self.cust,

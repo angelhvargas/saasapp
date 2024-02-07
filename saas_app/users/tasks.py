@@ -1,14 +1,13 @@
+# saas_app/users/tasks.py
 from celery import shared_task
 import mailchimp
 
 from django.conf import settings
-
-from saas_app.users.models import User
-
+from django.contrib.auth import get_user_model
 
 @shared_task
-def subscribe_to_mailing_list(user_pk):  # pragma: no cover
-    user = User.objects.get(pk=user_pk)
+def subscribe_to_mailing_list(user_pk, **kwargs):  # pragma: no cover
+    user = get_user_model().objects.get(pk=user_pk)
     if getattr(settings, "MAILCHIMP_API_KEY", False):
         m = mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
         m.lists.subscribe(
@@ -16,4 +15,5 @@ def subscribe_to_mailing_list(user_pk):  # pragma: no cover
             email={"email": user.email},
             double_optin=False,
             send_welcome=False,
+            **kwargs,
         )

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from django.urls import re_path, include, path
+# from __future__ import unicode_literals
+from django.urls import re_path
 
 from saas_app.app import views
 

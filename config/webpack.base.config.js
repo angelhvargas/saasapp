@@ -1,22 +1,24 @@
 import path from 'path';
-import webpack from 'webpack';
-
+import webpack, { ProvidePlugin } from 'webpack'; 
 
 module.exports = (opts) => {
 
   const {PROJECT_ROOT, NODE_ENV} = opts;
 
   let plugins = [
-    // add all common plugins here
+    // DefinePlugin as before
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV' : JSON.stringify(NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
     }),
-    // Promise and fetch polyfills
-    //new ProvidePlugin({
-      //Promise: 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise',
-      //fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch',
-    //}),
+    // Updated ProvidePlugin configuration
+    new ProvidePlugin({
+      Promise: ['es6-promise', 'Promise'], // This ensures es6-promise polyfill is used wherever Promise is referenced.
+      fetch: ['whatwg-fetch', 'fetch'], // This ensures whatwg-fetch polyfill is used wherever fetch is referenced.
+    }),
+    // Other plugins...
   ];
+  
+  
   if (NODE_ENV !== 'test') {
     // karma webpack can't use these
     plugins = [

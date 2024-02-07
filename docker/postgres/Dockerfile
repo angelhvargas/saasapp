@@ -1,4 +1,4 @@
-FROM postgres:12.8
+FROM postgres:14-bookworm
 
 # add backup scripts
 ADD backup.sh /usr/local/bin/backup

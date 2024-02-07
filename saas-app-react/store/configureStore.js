@@ -5,19 +5,14 @@ import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
 
 export default function configureAppStore(initialState) {
-  const middleware = [...getDefaultMiddleware()];
-
   const store = configureStore({
     reducer: rootReducer,
-    middleware,
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
     preloadedState: initialState,
-    // Integrate Redux Toolkit with custom DevTools
-    enhancers: [
-      ...(
-        process.env.NODE_ENV !== 'production' ?
-        [DevTools.instrument()] :
-        []
-      )
+    // Corrected enhancers configuration
+    enhancers: (defaultEnhancers) => [
+      ...defaultEnhancers(),
+      ...(process.env.NODE_ENV !== 'production' ? [DevTools.instrument()] : [])
     ],
     devTools: process.env.NODE_ENV !== 'production',
   });

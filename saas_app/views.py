@@ -8,7 +8,7 @@ class PricingView(TemplateView):
     template_name = "pages/pricing.html"
 
     def get_context_data(self, **kwargs):
-        data = super(PricingView, self).get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
         data["plans"] = get_plans(free_plan=True)
         data["col"] = (
             "col-md-{}".format(int(12 / len(data["plans"])))

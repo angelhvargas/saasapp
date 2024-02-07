@@ -2,7 +2,7 @@
   "parserOpts": { "allowReturnOutsideFunction": true },
   "presets": [
     "@babel/preset-react",
-    ["@babel/preset-env", { "useBuiltIns": "usage" }]
+    ["@babel/preset-env", { "useBuiltIns": "usage", "corejs": 3 }]
   ],
   "env": {
     "development": {
@@ -10,12 +10,15 @@
         "@babel/plugin-transform-runtime",
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-syntax-dynamic-import"
-      ]
+      ]      
     },
     "production": {},
     "test": {
       "plugins": [
-        ["__coverage__", {"ignore": "**/__tests__/**"}]
+        ["__coverage__", {"ignore": "**/__tests__/**"}],
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-syntax-dynamic-import"
       ]
     }
   }

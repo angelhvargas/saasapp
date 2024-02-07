@@ -10,3 +10,10 @@ class MyUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = User
         fields = ("first_name", "email")
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = user.email  # Use email as username
+        if commit:
+            user.save()
+        return user

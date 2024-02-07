@@ -12,7 +12,7 @@ class InviteForm(forms.Form):
 
 class RequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(RequestForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit("submit", "Submit"))
 

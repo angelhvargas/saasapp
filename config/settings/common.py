@@ -62,6 +62,7 @@ LOCAL_APPS = (
     "saas_app.blog",
     "saas_app.beta",
     # Your stuff: custom apps go here
+    #'saas_app.users.apps.UsersConfig'
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -303,13 +304,20 @@ SAAS_PRIVATE_BETA = False
 # - trial: The user is subscribed to a trial plan that expires after `SAAS_TRIAL_LENGTH` which
 #          defaults to 14 days.
 # - None: The user is not subscribed to any plan and has to subscribe to a paid plan.
-SAAS_SUBSCRIPTION_TYPE = "None"
+SAAS_SUBSCRIPTION_TYPE = "freemium"
 
 
 SAAS_PLANS = {
     # This is the free plan. Every new user will be subscribed to this plan automatically if you
     # set `SAAS_SUBSCRIPTION_TYPE` to `freemium`.
-    "free": {
+    "basic": {
+       "description": "Basic Plan Description",
+       "features": [
+           "Feature 1",
+           "Feature 2",
+       ]
+    },
+    "freemium": {
         "description": "Free Plan Description",
         "features": [
             "Mail campaings management",
@@ -330,13 +338,6 @@ SAAS_PLANS = {
     #        "Feature 2",
     #    ]
     # },
-    "price_1KDtaKFDRKyuJLcBDdB1HUJD": {
-        "description": "Free Plan Description 2",
-        "features": [
-            "Mail campaings management 2",
-        ],
-        "testfield": ["something2"],
-    },
 }
 
 
@@ -352,7 +353,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
+    "PAGE_SIZE": 15,
 }
 
 
@@ -381,3 +382,9 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = (
     True  # We recommend setting to True for new installations
 )
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+# Your local stuff: Below this line define 3rd party library settings
+# STRIPE_API_VERSION = "2020-08-27"
+
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

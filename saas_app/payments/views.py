@@ -35,13 +35,13 @@ logger = logging.getLogger(__name__)
 
 class CustomSubscriptionUpdateView(SubscriptionUpdateView):
     def get_context_data(self, **kwargs):
-        data = super(CustomSubscriptionUpdateView, self).get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
         data["plans"] = get_plans()
         data["change_button"] = True
         return data
 
     def update_subscription(self, plan_id):
-        super(CustomSubscriptionUpdateView, self).update_subscription(plan_id)
+        super().update_subscription(plan_id)
         # deactivate_exceeding_private_repos.delay(self.request.user.pk)
 
 
@@ -51,7 +51,7 @@ class CustomPaymentMethodCreateView(PaymentMethodCreateView):
         if self.customer is None:
             messages.error(request, "You can't add a card without a subscription")
             return HttpResponseRedirect(reverse("pinax_stripe_subscription_list"))
-        return super(CustomPaymentMethodCreateView, self).dispatch(
+        return super().dispatch(
             request, *args, **kwargs
         )
 
@@ -99,7 +99,7 @@ class CheckoutView(LoginRequiredMixin, FormView):
     template_name = "pinax/stripe/subscription_create.html"
 
     def get_context_data(self, **kwargs):
-        data = super(CheckoutView, self).get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
         data["plans"] = get_plans()
         data["OCTOBAT_PUBLIC_KEY"] = settings.OCTOBAT_PUBLIC_KEY
         data["OCTOBAT_SUPPLIER_NAME"] = settings.OCTOBAT_SUPPLIER_NAME
@@ -133,7 +133,7 @@ class CheckoutView(LoginRequiredMixin, FormView):
         messages.error(
             self.request, "Unable to process request. Please contact support."
         )
-        return super(CheckoutView, self).form_invalid(form)
+        return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_anonymous():
@@ -142,4 +142,4 @@ class CheckoutView(LoginRequiredMixin, FormView):
                     request, messages.ERROR, "You already have a subscription"
                 )
                 return redirect(reverse("pinax_stripe_subscription_list"))
-        return super(CheckoutView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)

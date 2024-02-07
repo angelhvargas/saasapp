@@ -24,7 +24,7 @@ class RequestInviteView(CreateView):
                 admin_url=build_absolute_uri(None, "/foo"),
             ),
         )
-        return super(RequestInviteView, self).form_valid(form)
+        return super().form_valid(form)
 
 
 class RequestInviteSuccess(TemplateView):
