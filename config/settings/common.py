@@ -303,13 +303,20 @@ SAAS_PRIVATE_BETA = False
 # - trial: The user is subscribed to a trial plan that expires after `SAAS_TRIAL_LENGTH` which
 #          defaults to 14 days.
 # - None: The user is not subscribed to any plan and has to subscribe to a paid plan.
-SAAS_SUBSCRIPTION_TYPE = "None"
+SAAS_SUBSCRIPTION_TYPE = "freemium"
 
 
 SAAS_PLANS = {
     # This is the free plan. Every new user will be subscribed to this plan automatically if you
     # set `SAAS_SUBSCRIPTION_TYPE` to `freemium`.
-    "free": {
+    "basic": {
+       "description": "Basic Plan Description",
+       "features": [
+           "Feature 1",
+           "Feature 2",
+       ]
+    },
+    "freemium": {
         "description": "Free Plan Description",
         "features": [
             "Mail campaings management",
@@ -330,13 +337,6 @@ SAAS_PLANS = {
     #        "Feature 2",
     #    ]
     # },
-    "price_1KDtaKFDRKyuJLcBDdB1HUJD": {
-        "description": "Free Plan Description 2",
-        "features": [
-            "Mail campaings management 2",
-        ],
-        "testfield": ["something2"],
-    },
 }
 
 
