@@ -11,7 +11,7 @@ def send_registration_mail(sender, instance, created, **kwargs):
     if created:
         send_mail(
             "New Registration",
-            message=f"{instance.email} has just registered",
+            message=f"<{instance.email}> has just registered",
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[settings.SAAS_INFO_MAIL],
         )

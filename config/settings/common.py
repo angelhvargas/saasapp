@@ -353,7 +353,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 25,
+    "PAGE_SIZE": 15,
 }
 
 
@@ -383,6 +383,8 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = (
 )
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 # Your local stuff: Below this line define 3rd party library settings
-STRIPE_API_VERSION = "2020-08-27"
+# STRIPE_API_VERSION = "2020-08-27"
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

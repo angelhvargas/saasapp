@@ -7,8 +7,7 @@ from django.contrib.auth import get_user_model
 
 @shared_task
 def subscribe_to_mailing_list(user_pk, **kwargs):  # pragma: no cover
-    User = get_user_model()
-    user = User.objects.get(pk=user_pk)
+    user = get_user_model().objects.get(pk=user_pk)
     if getattr(settings, "MAILCHIMP_API_KEY", False):
         m = mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
         m.lists.subscribe(
@@ -16,4 +15,5 @@ def subscribe_to_mailing_list(user_pk, **kwargs):  # pragma: no cover
             email={"email": user.email},
             double_optin=False,
             send_welcome=False,
+            **kwargs,
         )
