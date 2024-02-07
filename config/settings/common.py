@@ -62,6 +62,7 @@ LOCAL_APPS = (
     "saas_app.blog",
     "saas_app.beta",
     # Your stuff: custom apps go here
+    #'saas_app.users.apps.UsersConfig'
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -352,7 +353,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
+    "PAGE_SIZE": 25,
 }
 
 

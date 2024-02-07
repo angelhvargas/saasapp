@@ -34,7 +34,7 @@ django-redis==5.2.0
 redis>=4.1.0
 
 # celery
-celery==5.2.3
+celery==5.3.6
 
 # asset compression
 django-compressor==3.1
