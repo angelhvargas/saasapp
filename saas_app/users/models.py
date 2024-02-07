@@ -101,20 +101,20 @@ class User(AbstractUser):
         return None
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def send_registration_mail(sender, instance=None, created=False, **kwargs):
-    if created:
-        send_mail(
-            "New Registration",
-            message="{email} has just registered".format(email=instance.email),
-            from_email=getattr(settings, "DEFAULT_FROM_EMAIL"),
-            recipient_list=[settings.SAAS_INFO_MAIL],
-        )
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def send_registration_mail(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         send_mail(
+#             "New Registration",
+#             message="{email} has just registered".format(email=instance.email),
+#             from_email=getattr(settings, "DEFAULT_FROM_EMAIL"),
+#             recipient_list=[settings.SAAS_INFO_MAIL],
+#         )
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def subscribe_to_mailing_list(sender, instance=None, created=False, **kwargs):
-    if created:
-        from saas_app.users.tasks import subscribe_to_mailing_list
-
-        subscribe_to_mailing_list.delay(user_pk=instance.pk)
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def subscribe_to_mailing_list(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         # Local import to avoid cyclic import
+#         from saas_app.users.tasks import subscribe_to_mailing_list
+#         subscribe_to_mailing_list.delay(user_pk=instance.pk)

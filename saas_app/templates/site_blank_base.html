@@ -4,17 +4,27 @@
 {% block body_class %}blank{% endblock %}
 
 {% block body %}
-  <div class="container">
-    {% block nav %}
-    {% endblock %}
-    <div class="content">
+<div class="container blank-container">
+  <!-- Navigation Placeholder -->
+  {% block nav %}
+  <!-- Navigation can be overridden in templates that extend this one -->
+  {% endblock nav %}
 
-    {% block content %}{% endblock %}
-    {% block footer %}
-      {% include "site_footer.html" %}
-    {% endblock footer %}
-
-    </div>
+  <!-- Main Content -->
+  <div class="blank-content">
+    {% block content %}
+    <!-- Main content can be overridden in templates that extend this one -->
+    {% endblock content %}
   </div>
-  {% block modal %}{% endblock modal %}
+
+  <!-- Footer -->
+  {% block footer %}
+    {% include "site_footer.html" %}
+  {% endblock footer %}
+</div>
+
+<!-- Modal Placeholder -->
+{% block modal %}
+<!-- Modal content can be overridden in templates that extend this one -->
+{% endblock modal %}
 {% endblock %}
