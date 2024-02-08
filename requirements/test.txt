@@ -10,3 +10,6 @@ factory_boy==3.3.0
 # pytest
 pytest-django==4.8.0
 pytest-sugar==1.0.0
+
+# pylint
+pylint-django==2.5.5
