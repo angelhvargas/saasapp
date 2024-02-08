@@ -310,7 +310,7 @@ SAAS_SUBSCRIPTION_TYPE = "freemium"
 SAAS_PLANS = {
     # This is the free plan. Every new user will be subscribed to this plan automatically if you
     # set `SAAS_SUBSCRIPTION_TYPE` to `freemium`.
-    "basic": {
+    "free": {
        "description": "Basic Plan Description",
        "features": [
            "Feature 1",
@@ -338,6 +338,13 @@ SAAS_PLANS = {
     #        "Feature 2",
     #    ]
     # },
+    "basic": {
+       "description": "Basic Plan Description",
+       "features": [
+           "Feature 1",
+           "Feature 2",
+       ]
+    },
 }
 
 

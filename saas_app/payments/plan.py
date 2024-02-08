@@ -38,6 +38,10 @@ class FreePlan:
     @property
     def stripe_id(self):
         return self.name.lower()
+    
+    @property
+    def unit_amount(self):
+        return self.unit_amount
 
 class TrialPlan(FreePlan):
     def __init__(self):
