@@ -2,9 +2,9 @@
 # this should not be used for development.
 # is helpful to spot problems with NPM compatibility.
 
-FROM node:14-buster-slim
+FROM node:20-bookworm-slim
 
-RUN apt update -y && apt clean && apt install -y python2 \
+RUN apt update -y && apt clean && apt install -y python3 \
 gcc make build-essential git
 
 

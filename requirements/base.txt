@@ -1,6 +1,6 @@
 # Django
 
-django==3.2.23
+django==4.2.10
 
 # Postgres
 psycopg2-binary==2.8.6
@@ -52,7 +52,7 @@ django-loginas==0.3.10
 django-webpack-loader==1.4.1
 
 # Django Rest Framework
-djangorestframework==3.13.1
+djangorestframework==3.14.0
 
 # introducing graphql
 markdown==3.3.6
