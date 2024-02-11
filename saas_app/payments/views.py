@@ -51,9 +51,7 @@ class CustomPaymentMethodCreateView(PaymentMethodCreateView):
         if self.customer is None:
             messages.error(request, "You can't add a card without a subscription")
             return HttpResponseRedirect(reverse("pinax_stripe_subscription_list"))
-        return super().dispatch(
-            request, *args, **kwargs
-        )
+        return super().dispatch(request, *args, **kwargs)
 
     def create_card(self, stripe_token):
         for card in self.customer.card_set.all():

@@ -5,6 +5,7 @@ import mailchimp
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
+
 @shared_task
 def subscribe_to_mailing_list(user_pk, **kwargs):  # pragma: no cover
     user = get_user_model().objects.get(pk=user_pk)

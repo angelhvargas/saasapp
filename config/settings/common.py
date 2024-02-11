@@ -311,11 +311,11 @@ SAAS_PLANS = {
     # This is the free plan. Every new user will be subscribed to this plan automatically if you
     # set `SAAS_SUBSCRIPTION_TYPE` to `freemium`.
     "free": {
-       "description": "Basic Plan Description",
-       "features": [
-           "Feature 1",
-           "Feature 2",
-       ]
+        "description": "Basic Plan Description",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+        ],
     },
     "freemium": {
         "description": "Free Plan Description",
@@ -339,11 +339,11 @@ SAAS_PLANS = {
     #    ]
     # },
     "basic": {
-       "description": "Basic Plan Description",
-       "features": [
-           "Feature 1",
-           "Feature 2",
-       ]
+        "description": "Basic Plan Description",
+        "features": [
+            "Feature 1",
+            "Feature 2",
+        ],
     },
 }
 
@@ -393,5 +393,4 @@ DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 # STRIPE_API_VERSION = "2020-08-27"
 
 
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
