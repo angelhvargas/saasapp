@@ -6,6 +6,7 @@ from django.conf import settings
 
 from .tasks import subscribe_to_mailing_list  # This is your Celery task
 
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def send_registration_mail(sender, instance, created, **kwargs):
     if created:
@@ -15,6 +16,7 @@ def send_registration_mail(sender, instance, created, **kwargs):
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[settings.SAAS_INFO_MAIL],
         )
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def user_post_save_receiver(sender, instance, created, **kwargs):

@@ -1,5 +1,4 @@
 from datetime import timedelta
-from pinax.stripe.models import Plan, Customer, Subscription, Card, Invoice
 from test_plus.test import TestCase
 from unittest.mock import patch, Mock, PropertyMock
 

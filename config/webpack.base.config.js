@@ -1,69 +1,48 @@
 import path from 'path';
-import webpack, { ProvidePlugin } from 'webpack'; 
+import webpack, { DefinePlugin, ProvidePlugin } from 'webpack';
 
-module.exports = (opts) => {
-
-  const {PROJECT_ROOT, NODE_ENV} = opts;
+export default (opts) => {
+  const { PROJECT_ROOT, NODE_ENV } = opts;
 
   let plugins = [
-    // DefinePlugin as before
-    new webpack.DefinePlugin({
+    new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
     }),
-    // Updated ProvidePlugin configuration
-    new ProvidePlugin({
-      Promise: ['es6-promise', 'Promise'], // This ensures es6-promise polyfill is used wherever Promise is referenced.
-      fetch: ['whatwg-fetch', 'fetch'], // This ensures whatwg-fetch polyfill is used wherever fetch is referenced.
-    }),
-    // Other plugins...
   ];
-  
-  
-  if (NODE_ENV !== 'test') {
-    // karma webpack can't use these
-    plugins = [
-      ...plugins,
-      // vendor chuncks
-    ];
+
+  if (['development', 'production'].includes(NODE_ENV)) {
+    plugins.push(
+      new ProvidePlugin({
+        // Include only if necessary for your project's browser support requirements
+        Promise: ['es6-promise', 'Promise'],
+        fetch: ['whatwg-fetch', 'fetch'],
+      }),
+    );
   }
 
   return {
     context: PROJECT_ROOT,
-
     externals: {
-      // require("jquery") is external and available
-      //  on the global var jQuery
-      "jquery": "jQuery"
+      "jquery": "jQuery", // Example: Avoid bundling jQuery if it's included via a CDN in your HTML
     },
-
     entry: {
       main: path.resolve(PROJECT_ROOT, 'saas-app-react/index.js'),
       vendor: ['react', 'redux', 'react-router', 'react-redux', 'react-dom'],
     },
-
     output: {
       path: path.resolve(PROJECT_ROOT, 'saas_app/static/react/bundles'),
       filename: '[name]-[chunkhash].js',
     },
-
     plugins,
-    
-
     optimization: {
       runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
-        maxInitialRequests: Infinity,
-        minSize: 0,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name(module) {
-              // get the name. E.g. node_modules/packageName/not/this/part.js
-              // or node_modules/packageName
               const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-  
-              // npm package names are URL-safe, but some servers don't like @ symbols
               return `npm.${packageName.replace('@', '')}`;
             },
           },
@@ -132,13 +111,9 @@ module.exports = (opts) => {
         {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader'},
       ], // add all common loaders here
     },
-
     resolve: {
-      extensions: ['','.ts', '.js', '.jsx'],
-      modules: [
-        path.resolve(PROJECT_ROOT, 'saasapp-app-react'),
-        "node_modules",
-      ],
+      extensions: ['.ts', '.js', '.jsx'],
+      modules: [path.resolve(PROJECT_ROOT, 'saasapp-app-react'), 'node_modules'],
     },
   };
 };

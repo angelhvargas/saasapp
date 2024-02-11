@@ -1,46 +1,79 @@
 import path from 'path';
-import webpack from 'webpack';
-import BundleTracker from 'webpack-bundle-tracker';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'; // Automatically clean your build folder before each build
+import BundleTracker from 'webpack-bundle-tracker'; // If needed for integration with backend frameworks like Django
+import TerserPlugin from 'terser-webpack-plugin'; // For minification
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'; // For CSS optimization
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'; // Extracts CSS into separate files
+import { DefinePlugin } from 'webpack'; // For defining environment variables
 import baseConfig from './webpack.base.config.js';
 
-
 module.exports = (opts) => {
-
-  const
-    {CDN_PATH, PROJECT_ROOT} = opts,
-    config = baseConfig(opts);
+  const { PROJECT_ROOT } = opts;
+  const config = baseConfig(opts);
 
   return {
     ...config,
+    mode: 'production',
     output: {
       ...config.output,
-      path: path.resolve('/data/static', 'saas_app/dist/'),
-      // set CDN_PATH to your cdn static file directory
+      path: path.resolve(PROJECT_ROOT, 'dist'),
       publicPath: '/static/saas_app/dist/',
+      filename: '[name].[contenthash].js', // Use contenthash for better caching
     },
     plugins: [
       ...config.plugins,
-      // production bundle stats file
-      new BundleTracker({filename: 'webpack-stats-production.json', path: '/data/webpack'}),
-      // pass options to uglify
-      new webpack.LoaderOptionsPlugin({
-        options: {
-        },
-        minimize: false,
-        debug: true,
+      new CleanWebpackPlugin(),
+      new BundleTracker({ filename: 'webpack-stats-production.json', path: path.resolve(PROJECT_ROOT, 'webpack') }),
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
       }),
-      // minifies your code
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-        },
-        output: {
-          comments: false,
-        },
-        sourceMap: false,
+      new DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('production'),
       }),
-      // removes duplicate modules
-      new webpack.optimize.DedupePlugin(),
+      // Add other plugins here as needed
     ],
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              comparisons: false,
+            },
+            mangle: {
+              safari10: true,
+            },
+            output: {
+              comments: false,
+              ascii_only: true,
+            },
+            warnings: false,
+          },
+        }),
+        new CssMinimizerPlugin(),
+      ],
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: 25,
+        minSize: 20000,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+              return `npm.${packageName.replace('@', '')}`;
+            },
+          },
+        },
+      },
+      runtimeChunk: 'single',
+    },
+    performance: {
+      hints: 'warning',
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000,
+    },
+    // Consider using 'source-map' or 'hidden-source-map' for production
+    devtool: 'source-map',
   };
 };

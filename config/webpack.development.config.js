@@ -1,6 +1,4 @@
 import optimization from 'webpack';
-//import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-//import BundleTracker from 'webpack-bundle-tracker';
 import baseConfig from './webpack.base.config.js';
 
 

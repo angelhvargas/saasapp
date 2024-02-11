@@ -8,7 +8,7 @@ Production Configurations
 - Use sentry for error logging
 - Use opbeat for error reporting
 """
-from __future__ import absolute_import, unicode_literals
+
 import logging
 
 from .common import *  # noqa

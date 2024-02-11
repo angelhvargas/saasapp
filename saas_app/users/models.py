@@ -28,7 +28,7 @@ class User(AbstractUser):
         return self.email
 
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     @property
     def is_on_trial_plan(self):

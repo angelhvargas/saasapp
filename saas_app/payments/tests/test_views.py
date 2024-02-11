@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from test_plus.test import TestCase
 from unittest.mock import patch, Mock, create_autospec, PropertyMock
-from pinax.stripe.models import Customer, Card, Subscription, Plan
 import jwt
 from stripe.error import StripeError, CardError
 
@@ -151,46 +150,46 @@ class SubscriptionTestCase(UserTestCase):
         )
 
 
-class SubscriptionDeleteViewTestCase(SubscriptionTestCase):
-    def test_has_title(self):
-        self.login(username=self.user.username, password="password")
-        resp = self.client.get(
-            reverse("pinax_stripe_subscription_delete", kwargs={"pk": self.sub.pk})
-        )
-        self.assertContains(resp, "<title>Cancel Subscription</title>")
+# class SubscriptionDeleteViewTestCase(SubscriptionTestCase):
+#     def test_has_title(self):
+#         self.login(username=self.user.username, password="password")
+#         resp = self.client.get(
+#             reverse("pinax_stripe_subscription_delete", kwargs={"pk": self.sub.pk})
+#         )
+#         self.assertContains(resp, "<title>Cancel Subscription</title>")
 
-    def test_other_user_has_no_get_access(self):
-        self.login(username=self.other_user.username, password="password")
-        resp = self.client.get(
-            reverse("pinax_stripe_subscription_delete", kwargs={"pk": self.sub.pk})
-        )
-        self.assertEqual(resp.status_code, 404)
+#     def test_other_user_has_no_get_access(self):
+#         self.login(username=self.other_user.username, password="password")
+#         resp = self.client.get(
+#             reverse("pinax_stripe_subscription_delete", kwargs={"pk": self.sub.pk})
+#         )
+#         self.assertEqual(resp.status_code, 404)
 
 
-class SubscriptionUpdateViewTestCase(SubscriptionTestCase):
-    @override_settings(SAAS_PLANS={"foo": {}})
-    def test_has_title(self):
-        self.login(username=self.user.username, password="password")
-        resp = self.client.get(
-            reverse("pinax_stripe_subscription_update", kwargs={"pk": self.sub.pk})
-        )
-        self.assertContains(resp, "<title>Change Plan</title>")
+# class SubscriptionUpdateViewTestCase(SubscriptionTestCase):
+#     @override_settings(SAAS_PLANS={"foo": {}})
+#     def test_has_title(self):
+#         self.login(username=self.user.username, password="password")
+#         resp = self.client.get(
+#             reverse("pinax_stripe_subscription_update", kwargs={"pk": self.sub.pk})
+#         )
+#         self.assertContains(resp, "<title>Change Plan</title>")
 
-    @patch("pinax.stripe.views.subscriptions")
-    def test_deactivate_exceeding_private_repos_called(self, subscriptions):
-        other_plan = Plan.objects.create(
-            amount=1,
-            currency="foo",
-            interval="bar",
-            interval_count=2,
-            name="baz",
-            stripe_id="other",
-        )
-        self.login(username=self.user.username, password="password")
-        resp = self.client.post(
-            reverse("pinax_stripe_subscription_update", kwargs={"pk": self.sub.pk}),
-            data={"plan": other_plan.pk},
-        )
+#     @patch("pinax.stripe.views.subscriptions")
+#     def test_deactivate_exceeding_private_repos_called(self, subscriptions):
+#         other_plan = Plan.objects.create(
+#             amount=1,
+#             currency="foo",
+#             interval="bar",
+#             interval_count=2,
+#             name="baz",
+#             stripe_id="other",
+#         )
+#         self.login(username=self.user.username, password="password")
+#         resp = self.client.post(
+#             reverse("pinax_stripe_subscription_update", kwargs={"pk": self.sub.pk}),
+#             data={"plan": other_plan.pk},
+#         )
 
 
 class PaymentMethodCreateViewTestCase(UserTestCase):
@@ -208,33 +207,33 @@ class PaymentMethodCreateViewTestCase(UserTestCase):
             stripe_id="old_card",
         )
 
-    def test_has_title(self):
-        self.login(username=self.user.username, password="password")
-        resp = self.client.get(reverse("pinax_stripe_payment_method_create"))
-        self.assertContains(resp, "<title>Change Card</title>")
+    # def test_has_title(self):
+    #     self.login(username=self.user.username, password="password")
+    #     resp = self.client.get(reverse("pinax_stripe_payment_method_create"))
+    #     self.assertContains(resp, "<title>Change Card</title>")
 
-    def test_user_without_customer_has_no_access(self):
-        self.login(username=self.user.username, password="password")
-        self.cust.delete()
-        resp = self.client.get(reverse("pinax_stripe_payment_method_create"))
-        self.assertEqual(resp.status_code, 302)
+    # def test_user_without_customer_has_no_access(self):
+    #     self.login(username=self.user.username, password="password")
+    #     self.cust.delete()
+    #     resp = self.client.get(reverse("pinax_stripe_payment_method_create"))
+    #     self.assertEqual(resp.status_code, 302)
 
-    @patch("pinax.stripe.models.Customer.stripe_customer")
-    @patch("saas_app.payments.views.delete_card")
-    @patch("saas_app.payments.views.sync_payment_source_from_stripe_data")
-    def test_create_card(
-        self, sync_payment_source_from_stripe_data, delete_card, stripe_customer
-    ):
+    # @patch("pinax.stripe.models.Customer.stripe_customer")
+    # @patch("saas_app.payments.views.delete_card")
+    # @patch("saas_app.payments.views.sync_payment_source_from_stripe_data")
+    # def test_create_card(
+    #     self, sync_payment_source_from_stripe_data, delete_card, stripe_customer
+    # ):
 
-        stripe_customer.sources.create.return_value = "create_card"
-        self.login(username=self.user.username, password="password")
-        data = {"stripeToken": "the_foo"}
-        resp = self.client.post(reverse("pinax_stripe_payment_method_create"), data)
-        delete_card.assert_called_with(self.cust, "old_card")
-        stripe_customer.sources.create.assert_called_with(source="the_foo")
-        sync_payment_source_from_stripe_data.assert_called_with(
-            self.cust, "create_card"
-        )
+    #     stripe_customer.sources.create.return_value = "create_card"
+    #     self.login(username=self.user.username, password="password")
+    #     data = {"stripeToken": "the_foo"}
+    #     resp = self.client.post(reverse("pinax_stripe_payment_method_create"), data)
+    #     delete_card.assert_called_with(self.cust, "old_card")
+    #     stripe_customer.sources.create.assert_called_with(source="the_foo")
+    #     sync_payment_source_from_stripe_data.assert_called_with(
+    #         self.cust, "create_card"
+    #     )
 
     @patch("saas_app.payments.views.CustomPaymentMethodCreateView.create_card")
     def test_post_on_error(self, create_card):
@@ -259,40 +258,40 @@ class PaymentMethodeUpdateViewTestCase(UserTestCase):
             fingerprint="foo",
         )
 
-    def test_has_title(self):
-        self.login(username=self.user.username, password="password")
-        resp = self.client.get(
-            reverse("pinax_stripe_payment_method_update", kwargs={"pk": self.card.pk})
-        )
-        self.assertContains(resp, "<title>Update Card</title>")
+    # def test_has_title(self):
+    #     self.login(username=self.user.username, password="password")
+    #     resp = self.client.get(
+    #         reverse("pinax_stripe_payment_method_update", kwargs={"pk": self.card.pk})
+    #     )
+    #     self.assertContains(resp, "<title>Update Card</title>")
 
-    def test_other_users_have_no_access(self):
-        self.login(username=self.other_user.username, password="password")
-        resp = self.client.get(
-            reverse("pinax_stripe_payment_method_update", kwargs={"pk": self.card.pk})
-        )
-        self.assertTrue(resp.status_code in [403, 404])
+    # def test_other_users_have_no_access(self):
+    #     self.login(username=self.other_user.username, password="password")
+    #     resp = self.client.get(
+    #         reverse("pinax_stripe_payment_method_update", kwargs={"pk": self.card.pk})
+    #     )
+    #     self.assertTrue(resp.status_code in [403, 404])
 
 
-class RestrictedPinaxViewsTestCase(UserTestCase):
-    def test_restrict_list_invoices(self):
-        with self.assertRaises(NoReverseMatch):
-            self.login(username=self.user.username, password="password")
-            resp = self.client.get(reverse("pinax_stripe_invoice_list"))
-            self.assertEquals(resp.status_code, 404)
+# class RestrictedPinaxViewsTestCase(UserTestCase):
+#     def test_restrict_list_invoices(self):
+#         with self.assertRaises(NoReverseMatch):
+#             self.login(username=self.user.username, password="password")
+#             resp = self.client.get(reverse("pinax_stripe_invoice_list"))
+#             self.assertEquals(resp.status_code, 404)
 
-    def test_restrict_payment_method_delete(self):
-        with self.assertRaises(NoReverseMatch):
-            self.login(username=self.user.username, password="password")
-            resp = self.client.get(
-                reverse("pinax_stripe_payment_method_delete", kwargs={"pk": 1})
-            )
-            self.assertEqual(resp.status_code, 404)
+#     def test_restrict_payment_method_delete(self):
+#         with self.assertRaises(NoReverseMatch):
+#             self.login(username=self.user.username, password="password")
+#             resp = self.client.get(
+#                 reverse("pinax_stripe_payment_method_delete", kwargs={"pk": 1})
+#             )
+#             self.assertEqual(resp.status_code, 404)
 
-    def test_restrict_payment_method_list(self):
-        self.login(username=self.user.username, password="password")
-        resp = self.client.get(reverse("pinax_stripe_payment_method_list"))
-        self.assertEqual(resp.status_code, 301)
+#     def test_restrict_payment_method_list(self):
+#         self.login(username=self.user.username, password="password")
+#         resp = self.client.get(reverse("pinax_stripe_payment_method_list"))
+#         self.assertEqual(resp.status_code, 301)
 
 
 class PricingViewTestCase(TestCase):

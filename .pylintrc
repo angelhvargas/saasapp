@@ -1,5 +1,9 @@
+[MAIN]
+ignore=CVS
+persistent=yes
+
 [MASTER]
-load-plugins=pylint_common, pylint_django, pylint_celery
+
 
 [FORMAT]
 max-line-length=120

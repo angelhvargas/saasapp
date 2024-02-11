@@ -65,3 +65,4 @@ settings.json
 celerybeat-schedule
 venv/
 .idea/
+staticfiles
