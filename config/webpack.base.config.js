@@ -1,10 +1,12 @@
-import path from 'path';
-import webpack, { DefinePlugin, ProvidePlugin } from 'webpack';
+const path = require('path');
+const webpack = require('webpack');
 
-export default (opts) => {
+const { DefinePlugin, ProvidePlugin } = webpack;
+
+module.exports = (opts) => {
   const { PROJECT_ROOT, NODE_ENV } = opts;
 
-  let plugins = [
+  const plugins = [
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
     }),
@@ -13,9 +15,8 @@ export default (opts) => {
   if (['development', 'production'].includes(NODE_ENV)) {
     plugins.push(
       new ProvidePlugin({
-        // Include only if necessary for your project's browser support requirements
-        Promise: ['es6-promise', 'Promise'],
-        fetch: ['whatwg-fetch', 'fetch'],
+        Promise: 'es6-promise', // Assuming 'es6-promise' is installed and provides a 'Promise' polyfill
+        fetch: 'whatwg-fetch', // Assuming 'whatwg-fetch' is installed and provides a 'fetch' polyfill
       }),
     );
   }
@@ -23,10 +24,10 @@ export default (opts) => {
   return {
     context: PROJECT_ROOT,
     externals: {
-      "jquery": "jQuery", // Example: Avoid bundling jQuery if it's included via a CDN in your HTML
+      "jquery": "jQuery",
     },
     entry: {
-      main: path.resolve(PROJECT_ROOT, 'saas-app-react/index.js'),
+      main: path.resolve(PROJECT_ROOT, 'saas-app-react/index.tsx'), // Ensure this path is correct
       vendor: ['react', 'redux', 'react-router', 'react-redux', 'react-dom'],
     },
     output: {
@@ -41,7 +42,7 @@ export default (opts) => {
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name(module) {
+            name: (module) => {
               const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
               return `npm.${packageName.replace('@', '')}`;
             },
@@ -51,68 +52,48 @@ export default (opts) => {
     },
     module: {
       rules: [
-        { test: /\.jsx?$/,
-          exclude: /(node_modules)/,
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ['@babel/preset-env',
-              {
-                "targets": {
-                  "esmodules": true
-                }
-              }]
-            ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-              '@babel/plugin-transform-runtime'
-            ]
-          }
+        {
+          test: /\.([cm]?ts|tsx)$/, // or /\.ts$/ if you're only using TypeScript files without JSX
+          use: {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true, // Skip type checking
+            },
+          },
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.jsx?$/,
+          exclude: /(node_modules|\.ts$|\.tsx$)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-transform-runtime'],
+            },
+          },
         },
         {
           test: /\.scss$/,
-          use: [
-            {
-              // Adds CSS to the DOM by injecting a `<style>` tag
-              loader: 'style-loader'
-            },
-            {
-              // Interprets `@import` and `url()` like `import/require()` and will resolve them
-              loader: 'css-loader'
-            },
-            {
-              loader: 'sass-loader'
-            },
-            {
-              // Loader for webpack to process CSS with PostCSS
-              loader: 'postcss-loader',
-              options: {
-                plugins: function () {
-                  return [
-                    require('autoprefixer')
-                  ];
-                }
-              }
-            },
-            {
-              // Loads a SASS/SCSS file and compiles it to CSS
-              loader: 'sass-loader'
-            }
-          ]
+          use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
         },
         {
-          test: /\.css$/, 
-          use: [
-            'style-loader',
-            'css-loader'
-          ]
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
         },
-        {test: /\.(png|jpg|gif)$/, loader: 'url-loader', options: {limit: 8192}},  // inline base64 URLs <=8k
-        {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader'},
-      ], // add all common loaders here
+        {
+          test: /\.(png|jpg|gif|ttf|eot|svg)$/,
+          type: 'asset/resource',
+        },
+      ],
     },
     resolve: {
-      extensions: ['.ts', '.js', '.jsx'],
+      extensions: ['.tsx', '.ts', '.js', '.jsx'],
+      extensionAlias: {
+        ".js": [".js", ".ts"],
+        ".cjs": [".cjs", ".cts"],
+        ".mjs": [".mjs", ".mts"]
+       },
       modules: [path.resolve(PROJECT_ROOT, 'saasapp-app-react'), 'node_modules'],
     },
   };

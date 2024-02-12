@@ -10,21 +10,28 @@
  *
  * @returns {object} - returns a webpack config object
  */
+// ES Module Syntax
+const path = require('path');
+
 const OPTIONS = {
-  PROJECT_ROOT: __dirname,
+  PROJECT_ROOT: path.resolve(__dirname),
   NODE_ENV: process.env.NODE_ENV,
   CDN_PATH: process.env.CDN_PATH,
 };
 
-module.exports = (() => {
-  switch (process.env.NODE_ENV) {
+// Define a function that selects and requires the appropriate config file
+function getConfig(env) {
+  switch (env) {
     case 'production':
-      return require('./config/webpack.production.config.js');
+      return require('./config/webpack.production.config');
     case 'development':
-      return require('./config/webpack.development.config.js');
+      return require('./config/webpack.development.config');
     case 'test':
-      return require('./config/webpack.test.config.js');
+      return require('./config/webpack.test.config');
     default:
-      return require('./config/webpack.development.config.js');
+      return require('./config/webpack.development.config');
   }
-})()(OPTIONS);
+}
+
+// Export the result of invoking the selected config function with OPTIONS
+module.exports = getConfig(process.env.NODE_ENV)(OPTIONS);

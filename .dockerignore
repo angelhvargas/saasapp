@@ -4,4 +4,5 @@ celerybeat-schedule.*
 dev.yml
 docker-compose.yml
 fabfile.py
-node_modules
+node_modules/
+package-lock.json
