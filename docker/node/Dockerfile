@@ -1,8 +1,21 @@
-FROM node:18-bookworm
-WORKDIR /app
-COPY ./package.json /app/
-RUN mkdir -p /app/node_modules
-RUN apt-get update && apt upgrade -y && apt-get install python3 -y
-RUN npm install
+# Use a slimmer Node.js base image
+FROM node:20-slim
 
-COPY . /app
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json for npm install
+COPY package*.json ./
+
+# Install dependencies (including 'build-essential' for native dependencies)
+RUN apt-get update && apt-get install -y python3 build-essential && rm -rf /var/lib/apt/lists/* \
+    && npm install
+
+# Copy the rest of your application code
+COPY . .
+
+# Expose port 8080 if your application needs it
+EXPOSE 8080
+
+# Command to run your app (adjust as necessary)
+CMD ["npm", "start"]
